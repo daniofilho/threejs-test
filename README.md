@@ -2,7 +2,7 @@
 
 Just a simple "hello world" in ThreeJS.
 
-[DEMO](https://daniofilho.com.br/estudos/threejs)
+[DEMO](https://daniofilho.com.br/estudo/threejs)
 
 `yarn` para instalar as dependências
 
