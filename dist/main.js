@@ -9,8 +9,8 @@ const screenHeight = window.innerHeight;
 const cameraProps = {
     fov: 75,
     aspect: screenWidth / screenHeight,
-    near: 0.1,
-    far: 1000,
+    near: 1,
+    far: 100000,
 };
 const renderProps = {
     width: screenWidth,
@@ -20,33 +20,39 @@ const renderProps = {
 const three = Three_1.default(renderProps, cameraProps);
 // Start ThreeJS
 three.start();
-const { camera, scene } = three;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Add a box / square
-const textureFlat = new three_1.TextureLoader().load('assets/textures/grass.png');
-const texture = new three_1.CubeTextureLoader().load([
-    'assets/textures/grass.png',
-    'assets/textures/dirt.png',
-    'assets/textures/dirt.png',
-    'assets/textures/dirt.png',
-    'assets/textures/dirt.png',
-    'assets/textures/dirt.png',
-]);
-texture.magFilter = three_1.NearestFilter; // Allow pixelate effect when resize
-const material = new three_1.MeshBasicMaterial({ map: textureFlat });
+const loadManager = new three_1.LoadingManager();
+const loader = new three_1.TextureLoader(loadManager);
+const textureSides = loader.load('assets/textures/grass_dirt.png');
+textureSides.magFilter = three_1.NearestFilter; // Allow pixelate effect when resize
+const textureTop = loader.load('assets/textures/grass.png');
+textureTop.magFilter = three_1.NearestFilter;
+const textureBottom = loader.load('assets/textures/dirt.png');
+textureBottom.magFilter = three_1.NearestFilter;
+const materials = [
+    new three_1.MeshBasicMaterial({ map: textureSides }),
+    new three_1.MeshBasicMaterial({ map: textureSides }),
+    new three_1.MeshBasicMaterial({ map: textureTop }),
+    new three_1.MeshBasicMaterial({ map: textureBottom }),
+    new three_1.MeshBasicMaterial({ map: textureSides }),
+    new three_1.MeshBasicMaterial({ map: textureSides }),
+];
 const cubeProps = {
     width: 2,
     height: 2,
     depth: 2,
-    material,
+    material: materials,
 };
-const cube = three.createCube(cubeProps);
-camera.position.z = 5;
-// Rotate cube
-three.addAnimationCallback({
-    render: () => {
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
-    },
-});
+// Create cube only after image loaded
+loadManager.onLoad = () => {
+    const cube = three.createCube(cubeProps);
+    // Rotate cube
+    three.addAnimationCallback({
+        render: () => {
+            cube.rotation.x += 0.001;
+            cube.rotation.y += 0.01;
+        },
+    });
+};
 //# sourceMappingURL=main.js.map

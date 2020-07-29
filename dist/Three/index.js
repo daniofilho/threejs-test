@@ -1,15 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const three_1 = require("three");
+const THREE = require("three");
 const Three = (renderProps, cameraProps) => {
     // ----------------------- SETUP ---------------------------------
     // # Scene
-    const scene = new three_1.Scene();
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xcce0ff);
+    scene.fog = new THREE.Fog(0xcce0ff, 500, 10000);
     // # Camera
     // https://threejs.org/docs/index.html#api/en/cameras/PerspectiveCamera
-    const camera = new three_1.PerspectiveCamera(cameraProps.fov, cameraProps.aspect, cameraProps.near, cameraProps.far);
+    const camera = new THREE.PerspectiveCamera(cameraProps.fov, cameraProps.aspect, cameraProps.near, cameraProps.far);
+    //camera.position.set(1200, -250, 20000); // camera inside skybox
+    camera.position.z = 5;
+    const loader = new THREE.TextureLoader();
     // # Render
-    const render = new three_1.WebGLRenderer();
+    const render = new THREE.WebGLRenderer();
     // # Animations callbacks
     const animationsCallbacks = [];
     // ----------------------------------------------------------------
@@ -45,8 +50,8 @@ const Three = (renderProps, cameraProps) => {
     };
     // https://threejs.org/docs/index.html#api/en/geometries/BoxGeometry
     const createCube = ({ width, height, depth, material }) => {
-        const geometry = new three_1.BoxGeometry(width, height, depth);
-        const cube = new three_1.Mesh(geometry, material);
+        const geometry = new THREE.BoxGeometry(width, height, depth);
+        const cube = new THREE.Mesh(geometry, material);
         scene.add(cube);
         return cube;
     };

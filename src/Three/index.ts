@@ -1,4 +1,4 @@
-import { BoxGeometry, Mesh, PerspectiveCamera, WebGLRenderer, Scene } from 'three';
+import * as THREE from 'three';
 
 import { createCubeType, cameraPropsType, renderPropsType, animationType } from './types';
 
@@ -6,19 +6,25 @@ const Three = (renderProps: renderPropsType, cameraProps: cameraPropsType) => {
   // ----------------------- SETUP ---------------------------------
 
   // # Scene
-  const scene = new Scene();
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xcce0ff);
+  scene.fog = new THREE.Fog(0xcce0ff, 500, 10000);
 
   // # Camera
   // https://threejs.org/docs/index.html#api/en/cameras/PerspectiveCamera
-  const camera = new PerspectiveCamera(
+  const camera = new THREE.PerspectiveCamera(
     cameraProps.fov,
     cameraProps.aspect,
     cameraProps.near,
     cameraProps.far
   );
+  //camera.position.set(1200, -250, 20000); // camera inside skybox
+  camera.position.z = 5;
+
+  const loader = new THREE.TextureLoader();
 
   // # Render
-  const render = new WebGLRenderer();
+  const render = new THREE.WebGLRenderer();
 
   // # Animations callbacks
   const animationsCallbacks = [];
@@ -67,8 +73,8 @@ const Three = (renderProps: renderPropsType, cameraProps: cameraPropsType) => {
 
   // https://threejs.org/docs/index.html#api/en/geometries/BoxGeometry
   const createCube = ({ width, height, depth, material }: createCubeType) => {
-    const geometry = new BoxGeometry(width, height, depth);
-    const cube = new Mesh(geometry, material);
+    const geometry = new THREE.BoxGeometry(width, height, depth);
+    const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
     return cube;
   };

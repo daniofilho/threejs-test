@@ -6,7 +6,8 @@
     "rootDir": "src",
     "lib": ["es6", "dom"],
     "baseUrl": "src",
-    "sourceMap": true
+    "sourceMap": true,
+    "moduleResolution": "node"
   },
   "include": ["src"]
 }
