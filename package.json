@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/daniofilho/threejs-test#readme",
   "dependencies": {
-    "three": "^0.118.3"
+    "three": "^0.137.0"
   },
   "devDependencies": {
     "@types/node": "^14.0.24",
